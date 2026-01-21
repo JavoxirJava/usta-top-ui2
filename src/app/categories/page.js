@@ -1,19 +1,53 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
-import { categoriesAPI, usersAPI } from '@/lib/api';
-import { useFetch, useDebounce } from '@/hooks';
-import { REGIONS, SORT_OPTIONS } from '@/lib/constants';
-import { cn } from '@/lib/utils';
-import Input from '@/components/ui/Input';
-import Select from '@/components/ui/Select';
-import Button from '@/components/ui/Button';
-import { SkeletonMasterCard } from '@/components/ui/Loading';
-import { NoResults } from '@/components/ui/Empty';
 import MasterCard from '@/components/masters/MasterCard';
+import { NoResults } from '@/components/ui/Empty';
+import Input from '@/components/ui/Input';
+import { SkeletonMasterCard } from '@/components/ui/Loading';
+import Select from '@/components/ui/Select';
+import { useDebounce, useFetch } from '@/hooks';
+import { categoriesAPI } from '@/lib/api';
+import { REGIONS, SORT_OPTIONS } from '@/lib/constants';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Suspense, useEffect, useState } from 'react';
 
+// Wrapper component to handle Suspense for useSearchParams
 export default function CategoriesPage() {
+  return (
+    <Suspense fallback={<CategoriesPageSkeleton />}>
+      <CategoriesContent />
+    </Suspense>
+  );
+}
+
+function CategoriesPageSkeleton() {
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-cream-50 to-white">
+      <div className="bg-gradient-to-b from-cream-100 to-cream-50 border-b border-charcoal-100">
+        <div className="container-wide py-12">
+          <div className="h-10 w-64 bg-charcoal-200 rounded-lg animate-pulse mb-4" />
+          <div className="h-6 w-96 bg-charcoal-100 rounded-lg animate-pulse" />
+        </div>
+      </div>
+      <div className="container-wide py-8">
+        <div className="bg-white rounded-3xl p-6 shadow-soft border border-charcoal-100/50 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="h-12 bg-charcoal-100 rounded-xl animate-pulse" />
+            ))}
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <SkeletonMasterCard key={i} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CategoriesContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
 

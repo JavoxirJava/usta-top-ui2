@@ -1,19 +1,49 @@
 'use client';
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import Button from '@/components/ui/Button';
+import Input from '@/components/ui/Input';
 import { useAuth } from '@/context/AuthContext';
 import { useForm } from '@/hooks';
-import { isValidEmail, cn } from '@/lib/utils';
-import Input from '@/components/ui/Input';
-import Button from '@/components/ui/Button';
+import { cn, isValidEmail } from '@/lib/utils';
+import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Suspense, useState } from 'react';
 
+// Wrapper component to handle Suspense for useSearchParams
 export default function RegisterPage() {
+  return (
+    <Suspense fallback={<RegisterPageSkeleton />}>
+      <RegisterContent />
+    </Suspense>
+  );
+}
+
+function RegisterPageSkeleton() {
+  return (
+    <div className="min-h-[80vh] flex items-center justify-center py-12 px-4">
+      <div className="w-full max-w-md">
+        <div className="text-center mb-8">
+          <div className="w-10 h-10 mx-auto mb-6 rounded-xl bg-charcoal-200 animate-pulse" />
+          <div className="h-8 w-48 mx-auto bg-charcoal-200 rounded-lg animate-pulse mb-2" />
+          <div className="h-5 w-64 mx-auto bg-charcoal-100 rounded-lg animate-pulse" />
+        </div>
+        <div className="bg-white rounded-3xl p-8 shadow-soft border border-charcoal-100/50">
+          <div className="space-y-5">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className="h-12 bg-charcoal-100 rounded-xl animate-pulse" />
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function RegisterContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialRole = searchParams.get('role') || 'USER';
-  
+
   const { register, loading, error: authError, clearError } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [role, setRole] = useState(initialRole.toUpperCase());

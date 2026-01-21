@@ -1,8 +1,9 @@
-import './globals.css';
+import { Footer, Header } from '@/components/layout';
 import { AuthProvider } from '@/context/AuthContext';
-import { Header, Footer } from '@/components/layout';
+import './globals.css';
 
 export const metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
   title: {
     default: 'ServiceHub - Find Trusted Home Service Professionals',
     template: '%s | ServiceHub',
