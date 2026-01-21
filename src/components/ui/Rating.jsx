@@ -33,7 +33,7 @@ export default function Rating({
       </div>
       {showValue && (
         <span className={cn('font-medium text-charcoal-700', textSizes[size])}>
-          {value.toFixed(1)}
+          {Number(value).toFixed(1)}
         </span>
       )}
       {reviewCount !== undefined && (
