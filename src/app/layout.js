@@ -3,7 +3,7 @@ import { AuthProvider } from '@/context/AuthContext';
 import './globals.css';
 
 export const metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
+  metadataBase: new URL((process.env.NEXT_PUBLIC_SITE_URL || 'https://usta-top-api.javohir-dev.uz/api').replace('/api', '')),
   title: {
     default: 'ServiceHub - Find Trusted Home Service Professionals',
     template: '%s | ServiceHub',
